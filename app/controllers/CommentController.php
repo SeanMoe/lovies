@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends \BaseController {
+class CommentController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,13 +9,12 @@ class UserController extends \BaseController {
 	 */
 	public function index()
 	{
-		$user = User::all();
+		$comments = Comment::all();
 
 		return Response::json(array(
 			'error'=>false,
-			'urls'=>$user->toArray()),
-			200
-		);
+			'comments'=>$comments->toArray()),
+		200);
 	}
 
 
@@ -26,16 +25,16 @@ class UserController extends \BaseController {
 	 */
 	public function store()
 	{
-		$user = new User;
-		$user->username = Request::get('username');
-		$user->password = Hash::make(Request::get('password'));
-		$user->save();
+		$comment = new Comment;
+		$comment->user_id = Request::get('user_id');
+		$comment->comment = Request::get('comment');
+		$comment->photograph_id = Request::get('photograph_id');
+		$comment->save();
 
 		return Response::json(array(
 			'error'=>false,
-			'users'=>$users->toArray()),
-		200
-		);
+			'message'=>'Comment created'),
+		200);
 	}
 
 
@@ -47,13 +46,11 @@ class UserController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$user = User::where('id',$id)
-		->take(1)
-		->get();
+		$comment = Comment::find($id);
 
 		return Response::json(array(
 			'error'=>false,
-			$user->toArray()),
+			'comment'=>$comment->toArray()),
 		200);
 	}
 
@@ -66,17 +63,17 @@ class UserController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$user = User::find($id);
+		$comment = Comment::find($id);
 
-		if(Request::get('password')){
-			$user->password = Hash::make(Request::get('password'));
+		if(Request::get('comment')){
+			$comment->comment = Request::get('comment');
 		}
+		$comment->save();
 
 		return Response::json(array(
 			'error'=>false,
-			'message'=>'User updated'),
-		200
-		);
+			'messsage'=>'comment updated'),
+		200);
 	}
 
 
@@ -88,14 +85,13 @@ class UserController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$user = User::find($id);
-		$user->delete();
+		$comment = Comment::find($id);
+		$comment->delete();
 
 		return Response::json(array(
 			'error'=>false,
-			'message'=>'User deleted'),
-		200
-		);
+			'message'=>'comment deleted'),
+		200);
 	}
 
 
