@@ -22,6 +22,8 @@ Route::get('/authtest',array('before'=>'auth.basic',function(){
 
 Route::group(array('prefix'=>'api','before'=>'auth.basic'),function(){
   Route::resource('user','UserController');
+  Route::resource('photograph','PhotographController');
+  Route::resource('comment','CommentController');
 });
 
 App::missing(function($exception){
