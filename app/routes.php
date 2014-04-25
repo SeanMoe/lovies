@@ -16,7 +16,11 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::group(array('prefix'=>'api'),function(){
+Route::get('/authtest',array('before'=>'auth.basic',function(){
+	return "Test";
+}));
+
+Route::group(array('prefix'=>'api','before'=>'auth.basic'),function(){
   Route::resource('user','UserController');
 });
 

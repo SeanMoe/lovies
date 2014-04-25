@@ -9,18 +9,13 @@ class UserController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
-	}
+		$user = User::all();
 
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+		return Response::json(array(
+			'error'=>false,
+			'urls'=>$user->toArray()),
+			200
+		);
 	}
 
 
@@ -31,7 +26,16 @@ class UserController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$user = new User;
+		$user->username = Request::get('username');
+		$user->password = Hash::make(Request::get('password'));
+		$user->save();
+
+		return Response::json(array(
+			'errors'=>false,
+			'users'=>$users->toArray()),
+		200
+		);
 	}
 
 
@@ -43,19 +47,14 @@ class UserController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
-	}
+		$user = User::where('id',$id)
+		->take(1)
+		->get();
 
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
+		return Response::json(array(
+			'errors'=>false,
+			$user->toArray()),
+		200);
 	}
 
 
@@ -67,7 +66,8 @@ class UserController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$user = User::find($id);
+
 	}
 
 
@@ -79,7 +79,14 @@ class UserController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$user = User::find($id);
+		$user->delete();
+
+		return Response::json(array(
+			'errors'=>false,
+			'message'=>'User deleted'),
+		200
+		);
 	}
 
 
