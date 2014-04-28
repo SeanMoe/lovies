@@ -13,23 +13,19 @@ class FollowerController extends \BaseController {
 	}
 
 	public function follow($id){
-		$user = User::find(Auth::user()->id);
+		$user1 = User::find(Auth::user()->id);
 		$user2 = User::find($id);
+		$error = false;
 		if (!$user2){
-			$error = 1;
+			$error = true;
 			$message = "User not found!";
-		}
-		if($user1 == $user2){
-			$error =1;
-			$message = "Cant follow yourself!";
-		}
-		if($error){
 			return Response::json(array(
-			'error'=>true,
-			'message'=>$message));
+				'error'=>true,
+				'message'=>$message),
+			200);
 		}
 
-		$user->follow()->save($user2);
+		$user1->follow()->save($user2);
 
 		return Response::json(array(
 			'error'=>false,
@@ -41,6 +37,21 @@ class FollowerController extends \BaseController {
 		$user1 = User::find($id1);
 		$user2 = User::find($id2);
 
+		$user1->follow()->save($user2);
+
+		return Response::json(array(
+			'error'=>false),
+		200);
+	}
+
+	public function getFollowers($id){
+		$user1 = User::find($id);
+		$followers = $user1->followers;
+
+		return Response::json(array(
+			'error'=>false,
+			'followers'=>$followers->toArray()),
+		200);
 	}
 
 
