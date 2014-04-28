@@ -24,6 +24,7 @@ Route::group(array('prefix'=>'api','before'=>'auth.basic'),function(){
   Route::resource('user','UserController');
   Route::resource('photograph','PhotographController');
   Route::resource('comment','CommentController');
+  Route::get('follower/follow/{id}', array('uses'=>'FollowerController@follow'));
 });
 
 App::missing(function($exception){

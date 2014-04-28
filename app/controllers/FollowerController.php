@@ -12,15 +12,35 @@ class FollowerController extends \BaseController {
 		//
 	}
 
+	public function follow($id){
+		$user = User::find(Auth::user()->id);
+		$user2 = User::find($id);
+		if (!$user2){
+			$error = 1;
+			$message = "User not found!";
+		}
+		if($user1 == $user2){
+			$error =1;
+			$message = "Cant follow yourself!";
+		}
+		if($error){
+			return Response::json(array(
+			'error'=>true,
+			'message'=>$message));
+		}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+		$user->follow()->save($user2);
+
+		return Response::json(array(
+			'error'=>false,
+			'message'=>'followers created'),
+		200);
+	}
+
+	public function usertofollow($id1,$id2){
+		$user1 = User::find($id1);
+		$user2 = User::find($id2);
+
 	}
 
 
@@ -42,18 +62,6 @@ class FollowerController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
 	{
 		//
 	}
