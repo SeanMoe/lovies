@@ -44,16 +44,6 @@ class FollowerController extends \BaseController {
 		200);
 	}
 
-	public function getFollowers($id){
-		$user1 = User::find($id);
-		$followers = $user1->followers;
-
-		return Response::json(array(
-			'error'=>false,
-			'followers'=>$followers->toArray()),
-		200);
-	}
-
 
 	/**
 	 * Store a newly created resource in storage.
@@ -74,7 +64,13 @@ class FollowerController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$user1 = User::find($id);
+		$followers = $user1->followers;
+
+		return Response::json(array(
+			'error'=>false,
+			'followers'=>$followers->toArray()),
+		200);
 	}
 
 
