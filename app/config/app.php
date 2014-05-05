@@ -147,7 +147,8 @@ return array(
 	*/
 
 	'aliases' => array(
-
+/*		'UserTransformer' => 'Lovies\Transformers\UserTransformer',
+		'Transformer'     => 'Lovies\Transformers\Transformer',*/
 		'App'             => 'Illuminate\Support\Facades\App',
 		'Artisan'         => 'Illuminate\Support\Facades\Artisan',
 		'Auth'            => 'Illuminate\Support\Facades\Auth',

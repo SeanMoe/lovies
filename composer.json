@@ -8,6 +8,7 @@
 	},
 	"autoload": {
 		"classmap": [
+			"app/Lovies",
 			"app/commands",
 			"app/controllers",
 			"app/models",

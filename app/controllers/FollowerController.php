@@ -7,9 +7,15 @@ class FollowerController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($id)
 	{
-		//
+		$user1 = User::find($id);
+		$followers = $user1->followers;
+
+		return Response::json(array(
+			'error'=>false,
+			'followers'=>$followers->toArray()),
+		200);
 	}
 
 	public function follow($id){
@@ -64,13 +70,7 @@ class FollowerController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$user1 = User::find($id);
-		$followers = $user1->followers;
 
-		return Response::json(array(
-			'error'=>false,
-			'followers'=>$followers->toArray()),
-		200);
 	}
 
 

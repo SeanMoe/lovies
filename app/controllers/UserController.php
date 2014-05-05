@@ -1,6 +1,15 @@
 <?php
 
-class UserController extends \BaseController {
+class UserController extends ApiController {
+
+	/**
+	 * @var lovies\transformers\UserTransformer
+	 */
+	protected $UserTransformer;
+
+  	function __construct(Lovies\Transformers\UserTransformer $UserTransformer){
+  		$this->UserTransformer = $UserTransformer;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -9,13 +18,12 @@ class UserController extends \BaseController {
 	 */
 	public function index()
 	{
-		$user = User::all();
+		$users = User::all();
 
 		return Response::json(array(
 			'error'=>false,
-			'urls'=>$user->toArray()),
-			200
-		);
+			'users'=>$this->UserTransformer->transformCollection($users->all())),
+			200);
 	}
 
 
@@ -27,15 +35,14 @@ class UserController extends \BaseController {
 	public function store()
 	{
 		$user = new User;
+		if (! Input::get('username') or ! Input::get('password')){
+			$this->respondCreateFailed("Parameters failed validation");
+		}
 		$user->username = Request::get('username');
 		$user->password = Hash::make(Request::get('password'));
 		$user->save();
 
-		return Response::json(array(
-			'error'=>false,
-			'users'=>$users->toArray()),
-		200
-		);
+		return $this->respondCreated('User Updated');
 	}
 
 
@@ -47,14 +54,13 @@ class UserController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$user = User::where('id',$id)
-		->take(1)
-		->get();
+		$user = User::find($id);
 
-		return Response::json(array(
-			'error'=>false,
-			$user->toArray()),
-		200);
+		if(!$user){
+			return $this->respondNotFound('User does not exist!');
+		}
+
+		return $this->respondSuccess();
 	}
 
 
@@ -68,15 +74,19 @@ class UserController extends \BaseController {
 	{
 		$user = User::find($id);
 
-		if(Request::get('password')){
-			$user->password = Hash::make(Request::get('password'));
+		if(!$user){
+			return $this->respondNotFound('User does not exist!');
 		}
 
-		return Response::json(array(
-			'error'=>false,
-			'message'=>'User updated'),
-		200
-		);
+		if(Request::get('password')){
+			$user->password = Hash::make(Request::get('password'));
+		}  elseif(Request::get('username')){
+			$user->username = Request::get('username');
+		} else {
+			return $this->setResponseCode(303)->respondWithError('No Options given!');
+		}
+
+		return $this->respondSuccess('User Updated');
 	}
 
 
@@ -89,14 +99,14 @@ class UserController extends \BaseController {
 	public function destroy($id)
 	{
 		$user = User::find($id);
+
+		if(!$user){
+			return $this->respondNotFound('User does not exist!');
+		}
+
 		$user->delete();
 
-		return Response::json(array(
-			'error'=>false,
-			'message'=>'User deleted'),
-		200
-		);
+		return $this->respondSuccess('User Deleted');
 	}
-
 
 }

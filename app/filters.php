@@ -38,6 +38,10 @@ Route::filter('auth', function()
 	if (Auth::guest()) return Redirect::guest('login');
 });
 
+Route::filter('auth.admin',function(){
+
+});
+
 
 Route::filter('auth.basic', function()
 {

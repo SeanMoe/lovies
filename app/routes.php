@@ -16,17 +16,19 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::get('/authtest',array('before'=>'auth.basic',function(){
-	return "Test";
-}));
-
 Route::group(array('prefix'=>'api','before'=>'auth.basic'),function(){
   Route::resource('user','UserController');
   Route::resource('photograph','PhotographController');
   Route::resource('comment','CommentController');
-  Route::get('follower/follow/{id}', array('uses'=>'FollowerController@follow'));
-  Route::get('follower/usertofollow/{user1}/{user2}', array('uses'=>'FollowerController@follow'));
-  Route::get('follower/followers/{id}',array('uses'=>'FollowerController@getFollowers'));
+  Route::resource('user.followers','FollowerController',array('only'=>array('index')));
+  //Need to modify these to work RESTfully
+  /*
+  	Look at Nested resources in laravel
+	user.followers etc
+  */
+  //Route::get('follower/follow/{id}', array('uses'=>'FollowerController@follow'));
+  //Route::get('follower/usertofollow/{user1}/{user2}', array('uses'=>'FollowerController@usertofollow'));
+  //Route::get('follower/followers/{id}',array('uses'=>'FollowerController@getFollowers'));
 });
 
 App::missing(function($exception){
