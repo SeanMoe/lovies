@@ -34,15 +34,14 @@ class UserController extends ApiController {
 	 */
 	public function store()
 	{
-		$user = new User;
-		if (! Input::get('username') or ! Input::get('password')){
-			$this->respondCreateFailed("Parameters failed validation");
+		$validator = User::validate(Input::all());
+		if($validator->passes()){
+			$password = Hash::make(Input::get('password'));
+			User::create(['username'=>Input::get('username'), 'password'=>$password]);
+			return $this->respondCreated('User Created');
+		} else {
+			return $this->setStatusCode(422)->respondWithError('Fields did not pass validation');
 		}
-		$user->username = Request::get('username');
-		$user->password = Hash::make(Request::get('password'));
-		$user->save();
-
-		return $this->respondCreated('User Updated');
 	}
 
 
