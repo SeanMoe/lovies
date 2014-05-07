@@ -30,19 +30,19 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public function followers(){
-		return $this->has_many_and_belongs_to('User','follow','followed_id','follower_id');
+		return $this->belongsToMany('User','follow','followed_id','follower_id');
 	}
 
 	public function following(){
-		return $this->has_many_and_belongs_to('User','follow','follower_id','followed_id');
+		return $this->belongsToMany('User','follow','follower_id','followed_id');
 	}
 
 	public function photos(){
-		return $this->has_many('Photograph');
+		return $this->hasMany('Photograph');
 	}
 
 	public function comments(){
-		return $this->has_many('comment');
+		return $this->hasMany('Comment');
 	}
 	/**
 	 * Get the password for the user.

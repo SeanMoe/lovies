@@ -19,12 +19,10 @@ class PhotographController extends ApiController {
 
 		$photographs = $this->PhotographTransformer->transformCollection($photograph->all());
 
-		//return $this->respondWithArrayAndMessage($photographs, 'Photographs found');
+		return $this->respond([
+			'data'=>$photographs
+			]);
 
-	  	return Response::json(array(
-			'error'=>false,
-			'photographs'=>$this->PhotographTransformer->transformCollection($photograph->all())),
-		200);
 	}
 
 
@@ -58,10 +56,11 @@ class PhotographController extends ApiController {
 			return $this->respondNotFound('Photograph not found');
 		}
 
-	  	return Response::json(array(
-			'error'=>false,
-			'photograph'=>$this->PhotographTransformer->transform($photograph)),
-		200);
+		$photograph = $this->PhotographTransformer->transform($photograph);
+
+	  	return $this->respond([
+	  		'data'=>$photograph
+	  		]);
 	}
 
 

@@ -20,10 +20,10 @@ class UserController extends ApiController {
 	{
 		$users = User::all();
 
-		return Response::json(array(
-			'error'=>false,
-			'users'=>$this->UserTransformer->transformCollection($users->all())),
-			200);
+		$users = $this->UserTransformer->transformCollection($users->all());
+		return $this->respond([
+			'data'=>$users
+			]);
 	}
 
 
@@ -60,10 +60,11 @@ class UserController extends ApiController {
 			return $this->respondNotFound('User does not exist!');
 		}
 
-		return Response::json(array(
-			'error'=>false,
-			'user'=>$this->UserTransformer->transform($user)),
-			200);
+		$user = $this->UserTransformer->transform($user);
+
+		return $this->respond([
+			'data'=>$user
+			]);
 	}
 
 
@@ -110,6 +111,66 @@ class UserController extends ApiController {
 		$user->delete();
 
 		return $this->respondSuccess('User Deleted');
+	}
+
+	public function followers($id){
+		$user = User::find($id);
+
+		if(!$user){
+			return $this->respondNotFound('User does not exist!');
+		}
+
+		$followers = $user->followers;
+
+		foreach($followers as $follower){
+			$data[] = $follower->username;
+		}
+
+		return $this->respond([
+			'data'=>$data
+			]);
+
+	}
+
+	public function following($id){
+		$user = User::find($id);
+
+		if(!$user){
+			return $this->respondNotFound('User does not exist!');
+		}
+
+		$following = $user->following;
+
+		foreach($following as $user){
+			$data[] = $user->username;
+		}
+
+
+		return $this->respond([
+			'data'=>$data
+			]);
+	}
+
+	public function follow($id1,$id2){
+		$user1 = User::find($id1);
+		$user2 = User::find($id2);
+
+		if(!$user1 or !$user2){
+			return $this->respondNotFound('User does not exist!');
+		}
+
+		$user1->following()->save($user2);
+	}
+
+	public function unfollow($id1, $id2){
+		$user1 = User::find($id1);
+		$user2 = User::find($id2);
+
+		if(!$user1 or !$user2){
+			return $this->respondNotFound('User does not exist!');
+		}
+
+		$user1->following()->delete($user2);
 	}
 
 }

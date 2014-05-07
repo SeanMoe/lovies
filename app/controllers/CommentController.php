@@ -16,10 +16,11 @@ class CommentController extends ApiController {
 	{
 		$comments = Comment::all();
 
-		return Response::json(array(
-			'error'=>false,
-			'comments'=>$this->CommentTransformer->transformCollection($comments->all())),
-		200);
+		$comments = $this->CommentTransformer->transformCollection($comments->all());
+
+		return $this->respond([
+			'data'=>$comments
+			]);
 	}
 
 
@@ -58,10 +59,11 @@ class CommentController extends ApiController {
 			return $this->respondNotFound('Could not find comment');
 		}
 
-		return Response::json(array(
-			'error'=>false,
-			'comment'=>$this->CommentTransformer->transform($comment)),
-		200);
+		$comment = $this->CommentTransformer->transform($comment);
+
+		return $this->respond([
+			'data'=>$comment
+			]);
 	}
 
 
