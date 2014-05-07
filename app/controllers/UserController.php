@@ -60,7 +60,10 @@ class UserController extends ApiController {
 			return $this->respondNotFound('User does not exist!');
 		}
 
-		return $this->respondSuccess();
+		return Response::json(array(
+			'error'=>false,
+			'user'=>$this->UserTransformer->transform($user)),
+			200);
 	}
 
 

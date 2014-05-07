@@ -1,7 +1,12 @@
 <?php
 
-class CommentController extends \BaseController {
+class CommentController extends ApiController {
 
+	protected $CommentTransformer;
+
+	function __construct(Lovies\Transformers\CommentTransformer $CommentTransformer){
+		$this->CommentTransformer = $CommentTransformer;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -13,7 +18,7 @@ class CommentController extends \BaseController {
 
 		return Response::json(array(
 			'error'=>false,
-			'comments'=>$comments->toArray()),
+			'comments'=>$this->CommentTransformer->transformCollection($comments->all())),
 		200);
 	}
 
@@ -25,16 +30,17 @@ class CommentController extends \BaseController {
 	 */
 	public function store()
 	{
-		$comment = new Comment;
+		if (! Input::get('user_id') or ! Input::get('comment') or ! Input::get('photograph_id')){
+			return $this->respondCreateFailed('Parameters failed validation');
+		}
+
+		$comment = new Comment;		
 		$comment->user_id = Request::get('user_id');
 		$comment->comment = Request::get('comment');
 		$comment->photograph_id = Request::get('photograph_id');
 		$comment->save();
 
-		return Response::json(array(
-			'error'=>false,
-			'message'=>'Comment created'),
-		200);
+		return $this->respondCreated('Comment created!');
 	}
 
 
@@ -48,9 +54,13 @@ class CommentController extends \BaseController {
 	{
 		$comment = Comment::find($id);
 
+		if(!$comment){
+			return $this->respondNotFound('Could not find comment');
+		}
+
 		return Response::json(array(
 			'error'=>false,
-			'comment'=>$comment->toArray()),
+			'comment'=>$this->CommentTransformer->transform($comment)),
 		200);
 	}
 
@@ -65,15 +75,17 @@ class CommentController extends \BaseController {
 	{
 		$comment = Comment::find($id);
 
+		if(!$comment){
+			return $this->respondNotFound('Comment not found');
+		}
+
 		if(Request::get('comment')){
 			$comment->comment = Request::get('comment');
-		}
-		$comment->save();
-
-		return Response::json(array(
-			'error'=>false,
-			'messsage'=>'comment updated'),
-		200);
+			$comment->save();
+			return $this->respondCreated('Comment updated');
+		} else {
+			return $this->respondCreateFailed('Parameters failed validation');
+		} 
 	}
 
 
@@ -86,12 +98,12 @@ class CommentController extends \BaseController {
 	public function destroy($id)
 	{
 		$comment = Comment::find($id);
+		if(!$comment){
+			return $this->respondNotFound('Comment not found');
+		}
 		$comment->delete();
 
-		return Response::json(array(
-			'error'=>false,
-			'message'=>'comment deleted'),
-		200);
+		return $this->respondSuccess("Comment Deleted");
 	}
 
 

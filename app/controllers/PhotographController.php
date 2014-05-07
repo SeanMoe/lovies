@@ -1,6 +1,12 @@
 <?php
 
-class PhotographController extends \BaseController {
+class PhotographController extends ApiController {
+
+	protected $PhotographTransformer;
+
+	function __construct(Lovies\Transformers\PhotographTransformer $PhotographTransformer){
+		$this->PhotographTransformer = $PhotographTransformer;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -11,9 +17,13 @@ class PhotographController extends \BaseController {
 	{
 		$photograph = Photograph::all();
 
-		return Response::json(array(
+		$photographs = $this->PhotographTransformer->transformCollection($photograph->all());
+
+		//return $this->respondWithArrayAndMessage($photographs, 'Photographs found');
+
+	  	return Response::json(array(
 			'error'=>false,
-			'photographs'=>$photograph->toArray()),
+			'photographs'=>$this->PhotographTransformer->transformCollection($photograph->all())),
 		200);
 	}
 
@@ -25,17 +35,12 @@ class PhotographController extends \BaseController {
 	 */
 	public function store()
 	{
-		$photograph = new Photograph;
-		$photograph->user_id = Request::get('user_id');
-		$photograph->comment = Request::get('comment');
-		$photograph->geotag = Request::get('geotag');
-		$photograph->isPublic = Request::get('isPublic');
-		$photograph->save();
+		if(! Input::get('user_id') or ! Input::get('comment')){
+			return $this->respondCreateFailed('Parameters failed validation');
+		}
+		Photograph::create(Input::all());
 
-		return Response::json(array(
-			'error'=>false,
-			'message'=>'Photograph created'),
-		200);
+		return $this->respondCreated('Photograph created');
 	}
 
 
@@ -49,9 +54,13 @@ class PhotographController extends \BaseController {
 	{
 		$photograph = Photograph::find($id);
 
-		return Response::json(array(
+		if(!$photograph){
+			return $this->respondNotFound('Photograph not found');
+		}
+
+	  	return Response::json(array(
 			'error'=>false,
-			'photograph'=>$photograph->toArray()),
+			'photograph'=>$this->PhotographTransformer->transform($photograph)),
 		200);
 	}
 
@@ -66,6 +75,10 @@ class PhotographController extends \BaseController {
 	{
 		$photograph = Photograph::find($id);
 
+		if(!$photograph){
+			return $this->respondNotFound('Photograph not found');
+		}
+
 		if(Request::get('comment')){
 			$photograph->comment = Request::get('comment');
 		}
@@ -74,10 +87,7 @@ class PhotographController extends \BaseController {
 		}
 		$photograph->save();
 
-		return Response::json(array(
-			'error'=>false,
-			'message'=>'Photograph #$id updated'),
-		200);
+		return $this->respondSuccess('Photograph Updated');
 	}
 
 
@@ -90,12 +100,14 @@ class PhotographController extends \BaseController {
 	public function destroy($id)
 	{
 		$photograph = Photograph::find($id);
+
+		if(!$photograph){
+			return $this->respondNotFound('Photograph not found');
+		}
+
 		$photograph->delete();
 
-		return Response::json(array(
-			'error'=>false,
-			'message'=>'Photograph #$id deleted'),
-		200);
+		return $this->respondSuccess('Photograph Deleted');
 	}
 
 

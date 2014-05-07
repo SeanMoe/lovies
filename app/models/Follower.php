@@ -1,5 +1,5 @@
 <?php
 
-Class Follower extends Eloquent {
-	protected $table = 'follower';
+class Follow extends Eloquent{
+	protected $table="follow";
 }

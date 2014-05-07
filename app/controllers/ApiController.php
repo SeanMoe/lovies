@@ -37,15 +37,24 @@ class ApiController extends BaseController{
 	}
 
 	public function respondCreateFailed($message = "Failed to create"){
-		return $this->setStatusCode(IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY)->respondWithErorr($message);
+		return $this->setStatusCode(IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY)->respondWithError($message);
 	}
 
 	public function respond($data, $headers = []){
 		return Response::json($data, $this->getStatusCode(), $headers);
 	}
 
+	public function respondWithArrayAndMessage(array $array, $message){
+		return $this->respond([
+			'data'=>$array,
+			'message'=>$message,
+			'status_code'=>$this->getStatusCode()
+			]);
+	}
+
 	public function respondWithMessage($message){
 		return $this->respond([
+			'error'=>false,
 			'message'=>$message,
 			'status_code'=>$this->getStatusCode()
 			]);
@@ -53,10 +62,9 @@ class ApiController extends BaseController{
 
 	public function respondWithError($message){
 		return $this->respond([
-			'error'=>[
-				'message' => $message,
-				'status_code' => $this->getStatusCode()
-			]
+			'error'=>true,
+			'message' => $message,
+			'status_code' => $this->getStatusCode()
 		]);
 	}
 }

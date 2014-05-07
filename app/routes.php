@@ -16,11 +16,10 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::group(array('prefix'=>'api','before'=>'auth.basic'),function(){
+Route::group(array('prefix'=>'api'),function(){
   Route::resource('user','UserController');
   Route::resource('photograph','PhotographController');
   Route::resource('comment','CommentController');
-  Route::resource('user.followers','FollowerController',array('only'=>array('index')));
   //Need to modify these to work RESTfully
   /*
   	Look at Nested resources in laravel
