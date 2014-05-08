@@ -44,6 +44,19 @@ class ApiController extends BaseController{
 		return Response::json($data, $this->getStatusCode(), $headers);
 	}
 
+	public function respondWithPagination($object, $data){
+		$data = array_merge($data,[
+			'paginator'=>[
+				'total_count'=>$object->getTotal(),
+				'total_pages'=>$object->getTotal() / $object->getPerPage(),
+				'current_page'=>$object->getCurrentPage(),
+				'limit'=>$object->getPerPage()
+			]
+		]);
+
+		return $this->respond($data);
+	}
+
 	public function respondWithArrayAndMessage(array $array, $message){
 		return $this->respond([
 			'data'=>$array,

@@ -18,12 +18,15 @@ class UserController extends ApiController {
 	 */
 	public function index()
 	{
-		$users = User::all();
+		$limit = Input::get('limit') ?: 3;
 
-		$users = $this->UserTransformer->transformCollection($users->all());
-		return $this->respond([
-			'data'=>$users
-			]);
+		if($limit > 100){
+			$limit = 100;
+		}
+
+		$users = User::paginate($limit);
+
+		return $this->respondWithPagination($users, ['data'=>$this->UserTransformer->transformCollection($users->all())]);
 	}
 
 
