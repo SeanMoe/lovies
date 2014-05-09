@@ -6,6 +6,7 @@ class PhotographTransformer extends Transformer{
 		'id'=>$photograph['id'],
 		'user_id'=>$photograph['user_id'],
 		'comment'=>$photograph['comment'],
+		'photo'=>$photograph['photo'],
 		'isPublic'=>(boolean)$photograph['isPublic']
 		];
 	}

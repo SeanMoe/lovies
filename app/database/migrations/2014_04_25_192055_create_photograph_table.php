@@ -15,8 +15,8 @@ class CreatePhotographTable extends Migration {
 		Schema::create('photograph', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');			
-			$table->text('geotag')->nullable();
+			$table->integer('user_id');
+			$table->text('photo');			
 			$table->text('comment');
 			$table->boolean('isPublic')->default(False);
 			$table->timestamps();

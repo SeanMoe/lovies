@@ -33,10 +33,31 @@ class PhotographController extends ApiController {
 	 */
 	public function store()
 	{
-		if(! Input::get('user_id') or ! Input::get('comment')){
-			return $this->respondCreateFailed('Parameters failed validation');
+		$validator = Photograph::validate(Input::all());
+		if($validator->passes()){
+			$filename = str_random(12) . Input::file('photo')->getClientOriginalName();
+			$destination = 'photos';
+
+			$upload = Input::file('photo')->move($destination,$filename);
+			if($upload){
+				$photograph = new Photograph;
+				$photograph->user_id = Input::get('user_id');
+				$photograph->comment = Input::get('comment');
+				$photograph->isPublic = Input::get('isPublic');
+				$photograph->photo = $filename;
+				$photograph->save();
+			} else {
+				return $this->respondCreateFailed("Could not upload file");
+			}
+
+		} else {
+			$messages = $validator->messages();
+			$respondMessage = '';
+			foreach($messages->all() as $message){
+				$respondMessage .= ' - '.$message;
+			}
+			return $this->respondCreateFailed($message);
 		}
-		Photograph::create(Input::all());
 
 		return $this->respondCreated('Photograph created');
 	}
@@ -103,6 +124,7 @@ class PhotographController extends ApiController {
 		if(!$photograph){
 			return $this->respondNotFound('Photograph not found');
 		}
+		File::delete('photos/'.$photograph->photo);
 
 		$photograph->delete();
 
