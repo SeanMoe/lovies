@@ -15,13 +15,15 @@ class PhotographController extends ApiController {
 	 */
 	public function index()
 	{
-		$photograph = Photograph::all();
+		$limit = Input::get('limit') ?: 3;
 
-		$photographs = $this->PhotographTransformer->transformCollection($photograph->all());
+		if($limit > 100){
+			$limit = 100;
+		}
 
-		return $this->respond([
-			'data'=>$photographs
-			]);
+		$photographs = Photograph::paginate($limit);
+
+		return $this->respondWithPagination($photographs,['data'=>$this->PhotographTransformer->transformCollection($photographs->all())]);
 
 	}
 
@@ -124,6 +126,7 @@ class PhotographController extends ApiController {
 		if(!$photograph){
 			return $this->respondNotFound('Photograph not found');
 		}
+
 		File::delete('photos/'.$photograph->photo);
 
 		$photograph->delete();

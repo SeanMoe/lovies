@@ -3,7 +3,7 @@
 // Composer: "fzaninotto/faker": "v1.3.0"
 use Faker\Factory as Faker;
 
-class FollowTableSeeder extends Seeder {
+class FollowTableSeeder extends ApiSeeder{
 
 	public function run()
 	{

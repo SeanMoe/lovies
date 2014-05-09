@@ -45,10 +45,15 @@ class ApiController extends BaseController{
 	}
 
 	public function respondWithPagination($object, $data){
+		if ($object->getPerPage() > $object->getTotal()){
+			$total_pages = 1;
+		} else {
+			$total_pages = $object->getTotal() / $object->getPerPage();
+		}
 		$data = array_merge($data,[
 			'paginator'=>[
 				'total_count'=>$object->getTotal(),
-				'total_pages'=>$object->getTotal() / $object->getPerPage(),
+				'total_pages'=>$total_pages,
 				'current_page'=>$object->getCurrentPage(),
 				'limit'=>$object->getPerPage()
 			]

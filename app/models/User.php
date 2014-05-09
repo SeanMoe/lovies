@@ -6,7 +6,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	
-	protected $fillable = array('username','password');
+	protected $fillable = array('email','password');
 
 	/**
 	 * The database table used by the model.
@@ -24,7 +24,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public static function validate($input){
 		$rules = array(
-			'username'=>'required|unique:user|between:3,30',
+			'email'=>'required|unique:user|email|between:3,30',
 			'password'=>'required|alpha_num|between:4,16'
 			);
 

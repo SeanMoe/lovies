@@ -40,7 +40,7 @@ class UserController extends ApiController {
 		$validator = User::validate(Input::all());
 		if($validator->passes()){
 			$password = Hash::make(Input::get('password'));
-			User::create(['username'=>Input::get('username'), 'password'=>$password]);
+			User::create(['email'=>Input::get('email'), 'password'=>$password]);
 			return $this->respondCreated('User Created');
 		} else {
 			return $this->setStatusCode(422)->respondWithError('Fields did not pass validation');
@@ -86,8 +86,8 @@ class UserController extends ApiController {
 
 		if(Request::get('password')){
 			$user->password = Hash::make(Request::get('password'));
-		}  elseif(Request::get('username')){
-			$user->username = Request::get('username');
+		}  elseif(Request::get('email')){
+			$user->email = Request::get('email');
 		} else {
 			return $this->setResponseCode(303)->respondWithError('No Options given!');
 		}
@@ -125,7 +125,7 @@ class UserController extends ApiController {
 		$followers = $user->followers;
 
 		foreach($followers as $follower){
-			$data[] = $follower->username;
+			$data[] = $follower->email;
 		}
 
 		return $this->respond([
@@ -144,7 +144,7 @@ class UserController extends ApiController {
 		$following = $user->following;
 
 		foreach($following as $user){
-			$data[] = $user->username;
+			$data[] = $user->email;
 		}
 
 

@@ -20,7 +20,7 @@ class UserTest extends ApiTester {
 		$user = $this->getJson('api/user/1')->data;
 
 		$this->assertResponseOk();
-		$this->assertObjectHasAttributes($user, 'username','id');
+		$this->assertObjectHasAttributes($user, 'email','id');
 	}
 
 	/** @test */
@@ -47,7 +47,7 @@ class UserTest extends ApiTester {
 
 	protected function getStub(){
 		return [
-			'username'=>$this->fake->userName,
+			'email'=>$this->fake->email,
 			'password'=>$this->fake->word($nb=12)
 		];
 	}

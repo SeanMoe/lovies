@@ -14,13 +14,15 @@ class CommentController extends ApiController {
 	 */
 	public function index()
 	{
-		$comments = Comment::all();
+		$limit = Input::get('limit') ?: 3;
 
-		$comments = $this->CommentTransformer->transformCollection($comments->all());
+		if($limit > 100){
+			$limit = 100;
+		}
 
-		return $this->respond([
-			'data'=>$comments
-			]);
+		$comments = Comment::paginate($limit);
+
+		return $this->respondWithPagination($comments,['data'=>$this->CommentTransformer->transformCollection($comments->all())]);
 	}
 
 
