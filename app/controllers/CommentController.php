@@ -33,17 +33,22 @@ class CommentController extends ApiController {
 	 */
 	public function store()
 	{
-		if (! Input::get('user_id') or ! Input::get('comment') or ! Input::get('photograph_id')){
-			return $this->respondCreateFailed('Parameters failed validation');
-		}
-
-		$comment = new Comment;		
-		$comment->user_id = Request::get('user_id');
-		$comment->comment = Request::get('comment');
-		$comment->photograph_id = Request::get('photograph_id');
-		$comment->save();
-
-		return $this->respondCreated('Comment created!');
+        $validator = Comment::validate(Input::all());
+        if($validator->fails()){
+            $messages = $validator->messages();
+            $response = '';
+            foreach($messages->all() as $message){
+                $response .= ' - '. $message;
+            }
+            return $this->respondCreateFailed($response);
+        } else {
+            $comment = new Comment;
+            $comment->user_id = Request::get('user_id');
+            $comment->comment = Request::get('comment');
+            $comment->photograph_id = Request::get('photograph_id');
+            $comment->save();
+            return $this->respondCreated('Comment created!');
+        }
 	}
 
 
