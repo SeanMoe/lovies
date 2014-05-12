@@ -33,6 +33,7 @@ Route::group(array('prefix'=>'api'),function(){
   Route::delete('user/{id1}/follow/{id2}','UserController@unfollow');
   Route::post('login','UserController@doLogin');
   Route::get('logout','UserController@doLogout');
+  Route::get('checkauth','UserController@checkauth');
 });
 
 /*App::missing(function($exception){

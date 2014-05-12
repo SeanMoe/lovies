@@ -28,15 +28,15 @@
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Angular Routing Example</a>
+                <a class="navbar-brand" href="#">Lovies</a>
             </div>
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                <li><A href="#users"><i class="fa fa-user"></i> Users</A></li>
-                <li><a href="#register"><i class="fa fa-shield"></i> Register</a></li>
-                <li><a href="#login"><i class="fa fa-shield"></i> Login</a></li>
-                <li><a href="#" ng-click="logoutUser()"><i class="fa fa-shield"></i> Logout</a></li>
+                <li ng-show="loggedin"><A href="#users"><i class="fa fa-user"></i> Users</A></li>
+                <li ng-hide="loggedin"><a href="#register"><i class="fa fa-shield"></i> Register</a></li>
+                <li ng-hide="loggedin"><a href="#login"><i class="fa fa-shield"></i> Login</a></li>
+                <li ng-show="loggedin"><a href="#" ng-click="logoutUser()"><i class="fa fa-shield"></i> Logout</a></li>
                 <li><a href="#comments"><i class="fa fa-comment"></i> Comments</a></li>
             </ul>
         </div>

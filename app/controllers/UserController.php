@@ -120,24 +120,6 @@ class UserController extends ApiController {
 		return $this->respondSuccess('User Deleted');
 	}
 
-	public function followers($id){
-		$user = User::find($id);
-
-		if(!$user){
-			return $this->respondNotFound('User does not exist!');
-		}
-
-		$followers = $user->followers;
-
-		foreach($followers as $follower){
-			$data[] = $follower->email;
-		}
-
-		return $this->respond([
-			'data'=>$data
-			]);
-
-	}
 
     public function doLogin(){
         $rules = array(
@@ -170,20 +152,49 @@ class UserController extends ApiController {
         Auth::logout();
     }
 
-	public function following($id){
+	public function followers($id){
 		$user = User::find($id);
 
 		if(!$user){
 			return $this->respondNotFound('User does not exist!');
 		}
 
-		$following = $user->following;
-
-		foreach($following as $user){
-			$data[] = $user->email;
+		$followers = $user->followers;
+		$data = array();
+		foreach($followers as $user){
+			$data[] = array(
+				'id'=>$user->id,
+				'email'=>$user->email);
 		}
+		if(empty($data)){
+			return $this->respond([
+				'message'=>'This user has no followers'
+			]);
+		}
+		return $this->respond([
+			'data'=>$data
+			]);
 
+	}
 
+	public function following($id){
+		$user = User::find($id);
+
+		if(!$user){
+			return $this->respondNotFound('User does not exist!');
+		}
+		$following = $user->following;
+		$data = array();
+		foreach($following as $user){
+			$data[] = array(
+				'id'=>$user->id,
+				'email'=>$user->email);
+		}
+		if(empty($data)){
+			return $this->respond([
+				'message'=>'This user isnt following anyone!'
+			]);
+		}
 		return $this->respond([
 			'data'=>$data
 			]);
@@ -209,6 +220,10 @@ class UserController extends ApiController {
 		}
 
 		$user1->following()->delete($user2);
+	}
+
+	public function checkAuth(){
+		return Auth::user();
 	}
 
 }

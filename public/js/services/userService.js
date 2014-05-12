@@ -1,6 +1,10 @@
 angular.module('userService',[])
     .factory('User',function($http,$location){
         return {
+            checkauth: function(){
+                return $http.get('/api/checkauth');
+            },
+
             getUser: function(id,limit){
                 limit = limit || 3;
                 return $http.get('/api/user/'+id+'?limit='+limit);

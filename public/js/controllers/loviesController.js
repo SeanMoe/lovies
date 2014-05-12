@@ -2,6 +2,21 @@ angular.module('loviesController',[])
     .controller('loviesController',function($scope,$http,$location,User){
         $scope.userData = {};
         $scope.loading = false;
+        $scope.loggedin = false;
+
+        $scope.checkauth = function(){
+            User.checkauth()
+                .success(function(data){
+                    console.log(data);
+                    if(data){                        
+                        console.log(data);
+                        $scope.loggedin = true;
+                        console.log($scope.loggedin);
+                    }
+                })
+        }
+
+        $scope.checkauth();
 
         $scope.changeUserPage = function(){
             $scope.loading = true;
@@ -29,6 +44,7 @@ angular.module('loviesController',[])
                     $scope.message = "Successfully logged out!";
                     $location.path("/");
                     $scope.loading = false;
+                    $scope.checkauth();
                 })
         }
 
@@ -39,6 +55,7 @@ angular.module('loviesController',[])
                     $location.path("/");
                     $scope.message = "Successfully logged in";
                     $scope.loading = false;
+                    $scope.checkauth();
                 })
                 .error(function(data){
                     $scope.loading = false;
@@ -56,6 +73,7 @@ angular.module('loviesController',[])
                         $scope.loading = false;
                         $scope.message = "User created";
                         $location.path("/");
+                        $scope.checkauth();
                     })
                     .error(function(data){
                         $scope.loading = false;
