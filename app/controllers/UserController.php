@@ -43,7 +43,12 @@ class UserController extends ApiController {
 			User::create(['email'=>Input::get('email'), 'password'=>$password]);
 			return $this->respondCreated('User Created');
 		} else {
-			return $this->setStatusCode(422)->respondWithError('Fields did not pass validation');
+            $messages = $validator->messages();
+            $respondMessage = '';
+            foreach($messages->all() as $message){
+                $respondMessage .= ' - '.$message;
+            }
+            return $this->respondCreateFailed($message);
 		}
 	}
 
@@ -133,6 +138,37 @@ class UserController extends ApiController {
 			]);
 
 	}
+
+    public function doLogin(){
+        $rules = array(
+            'email'=>'required|email',
+            'password'=>'required|alpha_num|min:6'
+        );
+        $validator = Validator::make(Input::all(),$rules);
+        if($validator->fails()){
+            $messages = $validator->messages();
+            $respondMessage = '';
+            foreach($messages->all() as $message){
+                $respondMessage .= ' - '.$message;
+            }
+            return $this->setStatusCode(422)->respondWithError($message);
+        } else {
+            $userdata = array(
+                'email'=>Input::get('email'),
+                'password'=>Input::get('password')
+            );
+
+            if(Auth::attempt($userdata)){
+                return $this->respondSuccess();
+            } else {
+                return $this->setStatusCode(404)->respondWithMessage("Username and/or password incorrect!");
+            }
+        }
+    }
+
+    public function doLogout(){
+        Auth::logout();
+    }
 
 	public function following($id){
 		$user = User::find($id);

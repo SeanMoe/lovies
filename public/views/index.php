@@ -1,40 +1,59 @@
-<!doctype html>
-    <html lang="en">
+<!-- index.html -->
+<!DOCTYPE html>
+<html ng-app="loviesApp">
 <head>
-    <meta charset="UTF-8">
-    <title>Lovies Users</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"> <!-- load bootstrap via cdn -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <style>
-        body 		{ padding-top:30px; }
-        form 		{ padding-bottom:20px; }
-        .comment 	{ padding-bottom:20px; }
-    </style>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
-    <!-- ANGULAR -->
-    <!-- all angular resources will be loaded from the /public folder -->
-    <script src="js/controllers/mainCtrl.js"></script> <!-- load our controller -->
-    <script src="js/services/userService.js"></script> <!-- load our service -->
-    <script src="js/app.js"></script> <!-- load our application -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.min.js"></script>
+    <script src="js/controllers/mainCtrl.js"></script>
+    <script src="js/controllers/usersController.js"></script>
+    <script src="js/services/userService.js"></script>
+    <script src="js/app.js"></script>
+    <style>
+        form 		{ padding-bottom:20px; }
+        #main{
+            width:75%;
+            margin:auto;
+        }
+    </style>
 </head>
-<body class="container" ng-app="userApp" ng-controller="mainController">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="page-header">
-            <h2>Register</h2>
+<body ng-controller="mainController">
+
+<!-- HEADER AND NAVBAR -->
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Angular Routing Example</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#register"><i class="fa fa-shield"></i> Register</a></li>
+                <li><a href="#login"><i class="fa fa-shield"></i> Login</a></li>
+                <li><a href="#" ng-controller="usersController" ng-click="logoutUser()"><i class="fa fa-shield"></i> Logout</a></li>
+                <li><a href="#comments"><i class="fa fa-comment"></i> Comments</a></li>
+            </ul>
         </div>
-        <form ng-submit="submitUser()">
-            <div class="form-group">
-                <input type="email" class="form-control input-sm" name="email" ng-model="userData.email" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control input-sm" name="password" ng-model="userData.password" placeholder="Password">
-            </div>
-            <div class="form-group text-right">
-                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-            </div>
-        </form>
-        <p class="text-center" ng-show="loading"><span class="fa fa-meh-o fa-5x fa-spin"></span></p>
+    </nav>
+</header>
+
+<!-- MAIN CONTENT AND INJECTED VIEWS -->
+<div id="main">
+    <div ng-view>
+
     </div>
+    <p class="text-center" ng-show="loading"><span class="fa fa-meh-o fa-5x fa-spin"></span></p>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="text-center">
+    Sean Ruel 2014
+</footer>
+
 </body>
-    </html>
+</html>

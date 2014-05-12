@@ -11,9 +11,12 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('index');
+Route::get('/',function(){
+    return View::make('index');
+});
+
+Route::get('/checkauth',function(){
+   dd(Auth::user());
 });
 
 Route::group(array('prefix'=>'api'),function(){
@@ -28,8 +31,10 @@ Route::group(array('prefix'=>'api'),function(){
   Route::post('user/{id1}/follow/{id2}','UserController@follow');
   //Deletes a follower / Unfollows
   Route::delete('user/{id1}/follow/{id2}','UserController@unfollow');
+  Route::post('login','UserController@doLogin');
+  Route::get('logout','UserController@doLogout');
 });
 
-App::missing(function($exception){
-  return View::make('hello');
-});
+/*App::missing(function($exception){
+  return $exception;
+});*/
