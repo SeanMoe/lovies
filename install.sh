@@ -87,6 +87,6 @@ cd /var/www
 composer install --dev
 # Set up the database
 echo "CREATE DATABASE IF NOT EXISTS lovies" | mysql
-echo "CREATE USER 'seanruel'@'localhost' IDENTIFIED BY 'jamesbond'" | mysql
-echo "GRANT ALL PRIVILEGES ON lovies.* TO 'seanruel'@'localhost' IDENTIFIED BY 'jamesbond'" | mysql
+echo "CREATE USER 'seanruel'@'localhost' IDENTIFIED BY 'password'" | mysql
+echo "GRANT ALL PRIVILEGES ON lovies.* TO 'seanruel'@'localhost' IDENTIFIED BY 'password'" | mysql
 # Set up the database

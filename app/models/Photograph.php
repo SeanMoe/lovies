@@ -7,7 +7,7 @@ class Photograph extends Eloquent {
 	public static function validate($input){
 		$rules = array(
 			'user_id'=>'required|numeric|exists:user,id',
-			'comment'=>'required|alpha_num',
+			'comment'=>'required',
 			'photo'=>'required|image'
 			);
 

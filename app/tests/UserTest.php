@@ -41,6 +41,7 @@ class UserTest extends ApiTester {
 	/** @test */
 	public function it_throws_a_422_if_a_new_user_fails_validation(){
 		$this->getJson('api/user','POST');
+        dd($this->fake->image('photos'));
 
 		$this->assertResponseStatus(422);
 	}
