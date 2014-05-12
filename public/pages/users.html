@@ -1,0 +1,12 @@
+<div class="text-center" data-ng-init="getUsers(3,1)">
+<p>{{ message }}</p>
+<h1>Users</h1>
+<div ng-hide="loading" ng-repeat="user in users">
+	<p>Email: {{ user.email }}</p>
+	<p><a href="#users" ng-click="deleteUser(user.id)" class="text-muted">Delete</a></p>
+</div>
+	<div id="paginator" ng-hide="loading">
+		<pagination total-items="total_records" ng-model="current_page" num-pages="pages" items-per-page="page_limit" ng-change="changeUserPage()"></pagination>
+	</div>
+	<p class="text-center" ng-show="loading"><span class="fa fa-meh-o fa-5x fa-spin"></span></p>
+</div>

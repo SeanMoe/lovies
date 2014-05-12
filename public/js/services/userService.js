@@ -6,8 +6,10 @@ angular.module('userService',[])
                 return $http.get('/api/user/'+id+'?limit='+limit);
             },
 
-            get: function() {
-                return $http.get('/api/user');
+            get: function(limit,page) {
+                limit = limit || 3;
+                page = page || 1;
+                return $http.get('/api/user?limit='+limit+'&page='+page);
             },
 
             save : function(userData){

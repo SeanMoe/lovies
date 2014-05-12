@@ -48,7 +48,7 @@ class ApiController extends BaseController{
 		if ($object->getPerPage() > $object->getTotal()){
 			$total_pages = 1;
 		} else {
-			$total_pages = $object->getTotal() / $object->getPerPage();
+			$total_pages = ceil($object->getTotal() / $object->getPerPage());
 		}
 		$data = array_merge($data,[
 			'paginator'=>[

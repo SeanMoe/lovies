@@ -1,24 +1,29 @@
-var loviesApp = angular.module('loviesApp',['mainCtrl','usersController','userService','ngRoute']);
+var loviesApp = angular.module('loviesApp',['loviesController','userService','ngRoute','ui.bootstrap']);
 
 loviesApp.config(function($routeProvider){
     $routeProvider
         .when('/',{
             templateUrl : 'pages/home.html',
-            controller : 'mainController'
+            controller : 'loviesController'
+        })
+
+        .when('/users',{
+            templateUrl : 'pages/users.html',
+            controller: 'loviesController'
         })
 
         .when('/register',{
             templateUrl : 'pages/userRegistration.html',
-            controller : 'usersController'
+            controller : 'loviesController'
         })
 
         .when('/login',{
             templateUrl : 'pages/userLogin.html',
-            controller : 'usersController'
+            controller : 'loviesController'
         })
 
         .when('/comments',{
             templateUrl : 'pages/comments.html',
-            controller : 'commentsController'
+            controller : 'loviesController'
         });
 });
