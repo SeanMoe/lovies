@@ -1,0 +1,16 @@
+<div class="text-center" data-ng-init="getPhotographs(4,1);">
+<p>{{ message }}</p>
+<h1>Photographs</h1>
+<div ng-hide="loading" ng-repeat="photograph in photographs.data">
+	<p>ID: {{ photograph.id }}</p>
+	<p>User: {{ photograph.user_id }}</p>
+	<p>Photograph: {{photograph.photo}}</p>
+	<p>Comment: {{photograph.comment}}</p>
+	<p>Is Public?: {{photograph.isPublic}}</p>
+	<p><a href="#users" ng-click="deletePhotograph(photograph.id)" class="text-muted">Delete</a></p>
+</div>
+	<div id="paginator" ng-hide="loading">
+		<pagination total-items="photographs.paginator.total_count" ng-model="photographs.paginator.current_page" num-pages="photographs.paginator.total_pages" items-per-page="photographs.paginator.limit" ng-change="changePhotographPage()"></pagination>
+	</div>
+	<p class="text-center" ng-show="loading"><span class="fa fa-meh-o fa-5x fa-spin"></span></p>
+</div>

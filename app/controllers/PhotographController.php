@@ -21,7 +21,7 @@ class PhotographController extends ApiController {
 			$limit = 100;
 		}
 
-		$photographs = Photograph::paginate($limit);
+		$photographs = Photograph::orderBy('id','DESC')->paginate($limit);
 
 		return $this->respondWithPagination($photographs,['data'=>$this->PhotographTransformer->transformCollection($photographs->all())]);
 

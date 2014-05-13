@@ -1,0 +1,9 @@
+<div class="text-center" data-ng-init="getUserPage()">
+<p>{{ message }}</p>
+<h1>User</h1>
+<div ng-hide="loading" >
+    <p>Email: {{ user.data.email }}</p>
+    <p><a href="#users" ng-click="deleteUser(user.id)" class="text-muted">Delete</a></p>
+</div>
+    <p class="text-center" ng-show="loading"><span class="fa fa-meh-o fa-3x fa-spin"></span></p>
+</div>

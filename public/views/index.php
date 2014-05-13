@@ -8,9 +8,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-resource.min.js"></script>
     <script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
     <script src="js/controllers/loviesController.js"></script>
     <script src="js/services/userService.js"></script>
+    <script src="js/services/authService.js"></script>
+    <script src="js/services/photographService.js"></script>
     <script src="js/app.js"></script>
     <style>
         .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -22,7 +25,6 @@
     </style>
 </head>
 <body ng-controller="loviesController">
-
 <!-- HEADER AND NAVBAR -->
 <header>
     <nav class="navbar navbar-default">
@@ -33,11 +35,11 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                <li ng-show="loggedin"><A href="#users"><i class="fa fa-user"></i> Users</A></li>
-                <li ng-hide="loggedin"><a href="#register"><i class="fa fa-shield"></i> Register</a></li>
-                <li ng-hide="loggedin"><a href="#login"><i class="fa fa-shield"></i> Login</a></li>
-                <li ng-show="loggedin"><a href="#" ng-click="logoutUser()"><i class="fa fa-shield"></i> Logout</a></li>
-                <li><a href="#comments"><i class="fa fa-comment"></i> Comments</a></li>
+                <li ng-hide="auth.loggedin"><a href="#register"><i class="fa fa-shield"></i> Register</a></li>
+                <li ng-hide="auth.loggedin"><a href="#login"><i class="fa fa-shield"></i> Login</a></li>
+                <li ng-show="auth.loggedin"><a href="#photographs"><i class="fa fa-camera-retro"></i> Recent Photographs</a></li>
+                <li ng-show="auth.loggedin"><a href="#photographs/upload"><i class="fa fa-arrow-up"></i> Upload Photograph</a></li>
+                <li ng-show="auth.loggedin"><a ng-href="#here" ng-click="logoutUser()"><i class="fa fa-shield"></i> Logout</a></li>
             </ul>
         </div>
     </nav>

@@ -141,7 +141,8 @@ class UserController extends ApiController {
             );
 
             if(Auth::attempt($userdata)){
-                return $this->respondSuccess();
+            	$user = Auth::user();
+                return $this->respond(array('data'=>$user));
             } else {
                 return $this->setStatusCode(404)->respondWithMessage("Username and/or password incorrect!");
             }
@@ -150,6 +151,7 @@ class UserController extends ApiController {
 
     public function doLogout(){
         Auth::logout();
+        return $this->respondSuccess(array('data'=>array('message'=>'Logout Successful')));
     }
 
 	public function followers($id){
