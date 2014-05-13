@@ -1,4 +1,4 @@
-var loviesApp = angular.module('loviesApp',['loviesController','userService','ngRoute','ui.bootstrap']);
+var loviesApp = angular.module('loviesApp',['loviesController','userService','ngRoute','ui.bootstrap','ngResource','photographService','authService']);
 
 loviesApp.config(function($routeProvider){
     $routeProvider
@@ -22,8 +22,17 @@ loviesApp.config(function($routeProvider){
             controller : 'loviesController'
         })
 
-        .when('/comments',{
-            templateUrl : 'pages/comments.html',
+        .when('/photographs',{
+            templateUrl : 'pages/photographs.html',
             controller : 'loviesController'
+        })
+
+        .when('/user/:userId',{
+            templateUrl: 'pages/user.html',
+            controller: 'loviesController'
+        })
+
+        .otherwise({
+            redirectTo: '/'
         });
 });
